@@ -17,13 +17,12 @@ const Container = (props) => {
 	)
 	const [inputItem, setInputItem] = useState('')
 	
-	//fetch	for GET
+	//fetch	for GET (usando THEN)
 	const options = {
 		method: 'GET',
 		headers: {'Content-Type': 'application/json'},
 		
 	};
-	
 	console.log (taskList)
 
 	useEffect(()=>{
@@ -34,7 +33,7 @@ const Container = (props) => {
 	},[]
 	);
 
-	///fetch for PUT, en este caso este actua como un controlador.
+	///fetch for PUT(usando AWAIT), en este caso este actua como un controlador.
 	const updateList =async ()=>{
 		try{
 			const fetchcall = await fetch(url, {
@@ -52,7 +51,7 @@ const Container = (props) => {
 		updateList()
 	},[taskList])
 
-//funciones para todo
+//funciones para ToDos
 	const inputOnList = (e) => {
 		setInputItem(e.target.value);
 	};

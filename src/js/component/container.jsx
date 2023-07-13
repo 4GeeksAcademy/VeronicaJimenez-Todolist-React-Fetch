@@ -1,61 +1,56 @@
 import React from "react";
 import { useState, useEffect} from "react";
 
-//create your first component
+//create component
 const Container = (props) => {
     
 
 	const url = 'https://assets.breatheco.de/apis/fake/todos/user/vej'
 	
 	//hooks 
-	const [body, setBody] = useState(
+	const [taskList, setTaskList] = useState(
 		[
-			{ label: "Make the bed", done: false },
-			{ label: "Walk the dog", done: false },
-			{ label: "Do the replits", done: false }
+			//{ label: "Make the bed", done: false },
+			//{ label: "Walk the dog", done: false },
+			//{ label: "Do the replits", done: false }
 		]
 	)
 	const [inputItem, setInputItem] = useState('')
 	
-	//fetch	
+	//fetch	for GET
 	const options = {
 		method: 'GET',
 		headers: {'Content-Type': 'application/json'},
 		
-	  };
+	};
 	
-	options.method = 'PUT'  
-	options.body = JSON.stringify(body)
+	console.log (taskList)
 
-	console.log (body)
-
-	/*EJEMPLO DE COMO USAR EL AWAIT PARA HACER EL FETCH Y CAPTURAR UN ERROR
-	
-	const llamadoApi = async () => {
-		try {
-			const fetchcall = await fetch(url, options)
-			const response = await fetchcall.json()
-			console.log(response)
-			
-		} catch (error) { console.log(error)
-			
-		}
-		
-	}*/
-	
 	useEffect(()=>{
 		fetch(url, options)
   		.then(response => response.json())
-  		.then(response => console.log(response))
+  		.then(response => setTaskList(response))
  		.catch(error => console.error(error));
-	/*
-	SI SE USA EL AWIAT SE LLAMARIA A LA FUNCION DONDE ESTA EL AWAIT Y NO SE USARIA EL THEN
-	
-	llamadoApi()
-	*/
-
 	},[]
 	);
+
+	///fetch for PUT, en este caso este actua como un controlador.
+	const updateList =async ()=>{
+		try{
+			const fetchcall = await fetch(url, {
+				method: 'PUT',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify(taskList)
+			})
+			const response = await fetchcall.json()	
+			console.log(response)		
+
+		} catch (error) {console.log(error)}
+	} 
+
+	useEffect(()=>{
+		updateList()
+	},[taskList])
 
 //funciones para todo
 	const inputOnList = (e) => {
@@ -64,25 +59,27 @@ const Container = (props) => {
 
 	const whenEnter = (e) => {
 		if (e.key === "Enter"){
-			setBody(body.concat([{label: inputItem, done:false}]));
+			setTaskList(taskList.concat([{label: inputItem, done:false}]));
+			
+			console.log(taskList)
 			setInputItem("")
 		} else {null}
 		
 	};
 	function whenclick () {
-		setBody(body.concat([{label: inputItem, done:false}]));
+		setTaskList(taskList.concat([{label: inputItem, done:false}]));
 		setInputItem("")
 	}
 
 
 	const deleteItem = (id) => {
 		let eliminados = []
-		eliminados = body.filter((item, index) => {
+		eliminados = taskList.filter((item, index) => {
 			if (index !== id){
 				return item
 			}
 		})
-		setBody(eliminados)
+		setTaskList(eliminados)
 	}
 
 	
@@ -95,7 +92,7 @@ const Container = (props) => {
 				<button className="boton" onClick={whenclick}>Add to list</button>
 				<ul>
 					
-					{body.map((task,i) => (
+					{taskList.map((task,i) => (
 						<li key={i}>{task.label}
 						<button onClick={()=> deleteItem(i)}> x 
 						</button>
@@ -104,7 +101,7 @@ const Container = (props) => {
 					)}
 					
 				</ul>
-				<div> {body.length} Items Left</div>
+				<div> {taskList.length} Items Left</div>
 			
 		</div>
 	);

@@ -10,3 +10,48 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+h1 {
+    font-size: 60px;
+    text-align: center;
+    letter-spacing: 3px;
+    color: grey;
+    
+}
+.container{
+    margin: 20px auto;
+    width: 600px;
+    border: 1px solid #ccc;
+    padding: 12px 20px
+}
+
+    
+.buton {
+    margin: 10px;
+}
+input {
+    width: 450px;
+    padding: 8px 16px;   
+}
+ul{
+    width: 450px;
+    padding: 0px;
+    margin: 0px;
+}
+li {
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+    height: 45px;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    position: relative;
+}
+
+li button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 40px;
+    
+}
